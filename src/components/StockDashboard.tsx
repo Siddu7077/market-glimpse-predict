@@ -4,6 +4,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { TrendingUp, TrendingDown, DollarSign, BarChart3 } from 'lucide-react';
 import StockChart from './StockChart';
+import VolumeChart from './VolumeChart';
+import MarketOverview from './MarketOverview';
+import ComparisonChart from './ComparisonChart';
 import PredictionPanel from './PredictionPanel';
 import stockData from '../data/stockData.json';
 
@@ -38,7 +41,7 @@ const StockDashboard: React.FC = () => {
   const isPositive = currentStock.change >= 0;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {/* Stock Overview Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         <Card className="bg-gradient-to-r from-blue-500 to-blue-600 text-white">
@@ -100,17 +103,56 @@ const StockDashboard: React.FC = () => {
         </Card>
       </div>
 
-      {/* Main Content Grid */}
+      {/* Market Overview Section */}
+      <div className="space-y-6">
+        <div>
+          <h2 className="text-2xl font-bold text-gray-800 mb-2">Market Overview</h2>
+          <p className="text-gray-600">Portfolio distribution and market statistics</p>
+        </div>
+        <MarketOverview />
+      </div>
+
+      {/* Charts Section */}
+      <div className="space-y-6">
+        <div>
+          <h2 className="text-2xl font-bold text-gray-800 mb-2">Technical Analysis</h2>
+          <p className="text-gray-600">Price trends and volume analysis for {currentStock.symbol}</p>
+        </div>
+        
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <StockChart 
+            data={currentStock.historical} 
+            symbol={currentStock.symbol}
+          />
+          <VolumeChart 
+            data={currentStock.historical}
+            symbol={currentStock.symbol}
+          />
+        </div>
+      </div>
+
+      {/* Comparison Section */}
+      <div className="space-y-6">
+        <div>
+          <h2 className="text-2xl font-bold text-gray-800 mb-2">Performance Comparison</h2>
+          <p className="text-gray-600">Compare multiple stocks side by side</p>
+        </div>
+        <ComparisonChart />
+      </div>
+
+      {/* Prediction Section */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Chart Section */}
         <div className="lg:col-span-2">
+          <div className="mb-4">
+            <h2 className="text-2xl font-bold text-gray-800 mb-2">AI Predictions</h2>
+            <p className="text-gray-600">Advanced algorithmic price forecasting</p>
+          </div>
           <StockChart 
             data={currentStock.historical} 
             symbol={currentStock.symbol}
           />
         </div>
 
-        {/* Prediction Panel */}
         <div className="lg:col-span-1">
           <PredictionPanel 
             onSymbolChange={setSelectedSymbol}
